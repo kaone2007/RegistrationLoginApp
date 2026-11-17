@@ -1,3 +1,4 @@
+
 import quickchat.Message;
 import java.util.Scanner;
 
@@ -21,7 +22,8 @@ public class Main {
         System.out.print("Enter a password: ");
         String password = input.nextLine();
 
-        System.out.print("Enter your South African cell phone number (+27): ");
+        System.out.print(
+                "Enter your South African cell phone number (+27): ");
         String cellPhoneNumber = input.nextLine();
 
         Login user = new Login(
@@ -79,7 +81,7 @@ public class Main {
             System.out.println(user.returnLoginStatus());
 
             if (user.loginUser()) {
-                startQuickChat(input);
+                startQuickChat(input, cellPhoneNumber);
             }
 
         } else {
@@ -91,19 +93,30 @@ public class Main {
         input.close();
     }
 
+    // Keep the original method available
     public static void startQuickChat(Scanner input) {
+        startQuickChat(input, "Unknown");
+    }
+
+    public static void startQuickChat(
+            Scanner input, String sender) {
 
         System.out.println("\nWelcome to QuickChat.");
+
+        // Load previously stored messages from JSON
+        Message.loadStoredMessages();
 
         int maximumMessages = 0;
 
         while (maximumMessages <= 0) {
+
             System.out.print(
                     "How many messages would you like to enter? "
             );
 
             try {
-                maximumMessages = Integer.parseInt(input.nextLine());
+                maximumMessages =
+                        Integer.parseInt(input.nextLine());
 
                 if (maximumMessages <= 0) {
                     System.out.println(
@@ -125,6 +138,7 @@ public class Main {
             System.out.println("1. Send Messages");
             System.out.println("2. Show recently sent messages");
             System.out.println("3. Quit");
+            System.out.println("4. Stored Messages");
             System.out.print("Select an option: ");
 
             String option = input.nextLine();
@@ -140,7 +154,8 @@ public class Main {
                         break;
                     }
 
-                    System.out.print("Enter recipient cell number: ");
+                    System.out.print(
+                            "Enter recipient cell number: ");
                     String recipient = input.nextLine();
 
                     System.out.print("Enter your message: ");
@@ -170,15 +185,12 @@ public class Main {
                     String lengthResult =
                             newMessage.checkMessageLength();
 
-                    if (messageText.length() > 250) {
-                        System.out.println(
-                                "Please enter a message of less than 250 characters."
-                        );
-                        System.out.println(lengthResult);
+                    System.out.println(lengthResult);
+
+                    if (!lengthResult.equals(
+                            "Message ready to send.")) {
                         break;
                     }
-
-                    System.out.println(lengthResult);
 
                     System.out.println(
                             "Message Hash: "
@@ -188,16 +200,24 @@ public class Main {
                     String result = newMessage.SentMessage();
                     System.out.println(result);
 
-                    if (result.equals("Message successfully sent.")) {
-                        System.out.println("\n===== MESSAGE DETAILS =====");
-                        System.out.println(newMessage.getMessageDetails());
+                    if (result.equals(
+                            "Message successfully sent.")) {
+
+                        System.out.println(
+                                "\n===== MESSAGE DETAILS =====");
+                        System.out.println(
+                                newMessage.getMessageDetails());
                     }
 
-                    messagesProcessed++;
+                    if (!result.equals("No option selected.")) {
+                        messagesProcessed++;
+                    }
+
                     break;
 
                 case "2":
 
+                    // Retained from Part 2
                     System.out.println("Coming Soon.");
                     break;
 
@@ -205,17 +225,130 @@ public class Main {
 
                     running = false;
 
-                    System.out.println("\nTotal number of messages sent: "
+                    System.out.println(
+                            "\nTotal number of messages sent: "
                             + Message.returnTotalMessages());
 
-                    System.out.println("Thank you for using QuickChat.");
+                    System.out.println(
+                            "Thank you for using QuickChat.");
+                    break;
+
+                case "4":
+
+                    storedMessagesMenu(input, sender);
                     break;
 
                 default:
 
                     System.out.println(
-                            "Invalid option. Please select 1, 2 or 3."
+                            "Invalid option. Please select 1, 2, 3 or 4."
                     );
+                    break;
+            }
+        }
+    }
+
+    // Part 3: Stored Messages menu
+    public static void storedMessagesMenu(
+            Scanner input, String sender) {
+
+        boolean back = false;
+
+        while (!back) {
+
+            System.out.println(
+                    "\n===== STORED MESSAGES MENU =====");
+            System.out.println(
+                    "1. Display sender and recipient");
+            System.out.println(
+                    "2. Display longest stored message");
+            System.out.println(
+                    "3. Search message by Message ID");
+            System.out.println(
+                    "4. Search messages by recipient");
+            System.out.println(
+                    "5. Delete message using Message Hash");
+            System.out.println(
+                    "6. Display full message report");
+            System.out.println(
+                    "7. Return to main menu");
+            System.out.print("Select an option: ");
+
+            String choice = input.nextLine();
+
+            switch (choice) {
+
+                case "1":
+
+                    System.out.println(
+                            "\n===== SENDER AND RECIPIENT =====");
+
+                    System.out.println(
+                            Message.displaySenderAndRecipient(sender));
+                    break;
+
+                case "2":
+
+                    System.out.println(
+                            "\n===== LONGEST STORED MESSAGE =====");
+
+                    System.out.println(
+                            Message.displayLongestMessage());
+                    break;
+
+                case "3":
+
+                    System.out.print(
+                            "Enter the Message ID to search: ");
+
+                    String id = input.nextLine().trim();
+
+                    System.out.println(
+                            Message.searchMessageID(id));
+                    break;
+
+                case "4":
+
+                    System.out.print(
+                            "Enter recipient cell number: ");
+
+                    String recipient = input.nextLine().trim();
+
+                    System.out.println(
+                            Message.searchRecipient(recipient));
+                    break;
+
+                case "5":
+
+                    System.out.print(
+                            "Enter Message Hash to delete: ");
+
+                    String hash = input.nextLine().trim();
+
+                    System.out.println(
+                            Message.deleteMessageByHash(hash));
+                    break;
+
+                case "6":
+
+                    System.out.println(
+                            "\n===== QUICKCHAT MESSAGE REPORT =====");
+
+                    System.out.println(
+                            Message.displayReport());
+                    break;
+
+                case "7":
+
+                    back = true;
+                    System.out.println(
+                            "Returning to QuickChat main menu.");
+                    break;
+
+                default:
+
+                    System.out.println(
+                            "Invalid option. Please select 1 to 7.");
                     break;
             }
         }
