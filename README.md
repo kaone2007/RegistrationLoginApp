@@ -1,94 +1,167 @@
-# RegistrationLoginApp – QuickChat Part 2
+# RegistrationLoginApp – QuickChat Part 3
 
 ## Project Description
 
-This project is a Java-based registration, login, and messaging application developed using Apache NetBeans.
+QuickChat is a Java-based registration, login, and messaging application developed using Apache NetBeans IDE.
 
-The application allows users to register, log in, and access QuickChat to create and manage messages.
+The project demonstrates Java programming concepts, object-oriented programming, user authentication, message management, JSON file storage, and automated unit testing using JUnit.
 
-## Features
+QuickChat was developed in three parts, with each part introducing additional functionality.
 
-### Part 1: Registration and Login
-- Username validation
-- Password validation
-- South African cellphone number validation
-- User registration
-- User login
-- Login status messages
+## Part 1: User Registration and Login
 
-### Part 2: QuickChat Messaging
-- QuickChat welcome message and menu
-- Unique 10-digit message ID generation
-- Recipient cellphone number validation using international format
-- Message length validation (maximum 250 characters)
-- Message hash generation
-- Send Message option
-- Disregard Message option
-- Store Message option
-- JSON message storage
-- Tracking of sent messages
+The application allows users to:
+
+- Register a username, password, and South African cellphone number.
+- Validate username requirements.
+- Validate password complexity.
+- Validate cellphone numbers using the international +27 format.
+- Log in using registered credentials.
+- Receive appropriate success or error messages.
+
+## Part 2: Sending Messages
+
+After successfully logging in, users can access QuickChat.
+
+The application allows users to:
+
+- Enter the number of messages they want to create.
+- Enter a recipient cellphone number and message text.
+- Validate recipient cellphone numbers.
+- Validate messages against the 250-character limit.
+- Generate a unique 10-digit message ID.
+- Generate a message hash automatically.
+- Choose to send, disregard, or store a message.
+- Save stored messages in a JSON file.
+- Display the total number of sent messages.
+
+## Part 3: Message Storage and Reporting
+
+Part 3 extends QuickChat with additional message-management functionality.
+
+### Message Arrays
+
+The application maintains collections for:
+
+- Sent messages
+- Disregarded messages
+- Stored messages
+- Message hashes
+- Message IDs
+
+Stored messages can be loaded from the `storedMessages.json` file.
+
+### Stored Messages Menu
+
+The Stored Messages menu provides the following features:
+
+1. **Display Sender and Recipient:** Displays the sender and recipient cellphone numbers for stored messages.
+2. **Display Longest Message:** Finds and displays the longest stored message.
+3. **Search by Message ID:** Searches for a message using its unique ID and displays the recipient and message content.
+4. **Search by Recipient:** Displays messages associated with a specified recipient.
+5. **Delete Message by Hash:** Finds and deletes a stored message using its message hash.
+6. **Display Full Message Report:** Displays stored message details, including message ID, message hash, recipient, and message content.
+7. **Return to Main Menu:** Returns to the QuickChat main menu.
 
 ## Technologies Used
 
 - Java
-- Apache NetBeans
-- Maven
+- Apache NetBeans IDE
+- Apache Maven
 - JUnit 5
-- Git
-- GitHub
+- JSON file storage
+- Git and GitHub
 - GitHub Actions
-- JSON
 
 ## Project Structure
 
-- `Login.java` – Contains registration and login validation methods.
-- `Main.java` – Runs the application and handles user input and the QuickChat menu.
-- `LoginTest.java` – Contains JUnit tests for registration and login.
-- `Message.java` – Handles message creation, validation, message IDs, hashes, and storage.
-- `MessageTest.java` – Contains JUnit tests for messaging functionality.
-- `storedMessages.json` – Stores messages in JSON format.
-- `pom.xml` – Contains Maven project configuration and dependencies.
+```text
+RegistrationLoginApp/
+├── .github/
+│   └── workflows/
+│       └── main.yml
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       ├── Login.java
+│   │       ├── Main.java
+│   │       └── quickchat/
+│   │           └── Message.java
+│   └── test/
+│       └── java/
+│           ├── LoginTest.java
+│           └── quickchat/
+│               └── MessageTest.java
+├── pom.xml
+├── README.md
+└── storedMessages.json
+```
 
-## How the Application Works
+## Unit Testing
 
-1. The user registers by entering their personal details.
-2. The application validates the registration information.
-3. The user logs in using the registered username and password.
-4. The QuickChat menu appears after successful login.
-5. The user selects the option to create a message.
-6. The application validates the recipient and message length.
-7. A unique message ID and message hash are generated.
-8. The user chooses to send, disregard, or store the message.
-9. Stored messages are saved in `storedMessages.json`.
-10. The user can exit the application using the Quit option.
+The application uses JUnit 5 for automated testing.
 
-## Testing
+### Part 1 Tests
 
-JUnit 5 was used to test the application's functionality.
+The `LoginTest.java` class tests registration and login validation functionality.
 
-The tests cover:
-- Username validation
-- Password validation
-- Cellphone number validation
-- Login functionality
-- Message length validation
-- Recipient validation
+### Part 2 Tests
+
+The `MessageTest.java` class includes tests for:
+
+- Valid message length
+- Invalid message length
+- Valid recipient cellphone number
+- Invalid recipient cellphone number
 - Message ID generation
 - Message hash generation
 
-**Test Results:**
-- LoginTest.java: 13 tests passed
-- MessageTest.java: 6 tests passed
-- Total: 19 tests passed
+### Part 3 Tests
 
-The project completed Clean and Build successfully in Apache NetBeans.
+Additional JUnit tests verify:
+
+- Sent messages collection
+- Longest stored message
+- Searching by message ID
+- Searching by recipient
+- Successful deletion using a message hash
+- Full message report
+
+The deletion test uses a temporary JSON file to protect the application's normal stored messages.
+
+## How to Run the Application
+
+1. Download or clone the GitHub repository.
+2. Open Apache NetBeans IDE.
+3. Select **File → Open Project**.
+4. Open the `RegistrationLoginApp` project.
+5. Allow Maven to load the project dependencies.
+6. Open `Main.java` under Source Packages.
+7. Run `Main.java`.
+8. Follow the instructions to register, log in, and access QuickChat.
+
+## How to Run Unit Tests
+
+1. Open the project in NetBeans.
+2. Right-click `RegistrationLoginApp`.
+3. Select **Test**.
+4. Wait for Maven and JUnit to complete.
+5. Check the Output window for the test results.
+
+Alternatively, run the following command from the project directory:
+
+```bash
+mvn test
+```
 
 ## GitHub Actions
 
-GitHub Actions is configured to run automated Maven build checks.
+The repository includes a GitHub Actions workflow for automated testing.
 
-The latest workflow completed successfully with a green tick.
+The workflow helps verify that the project builds and that the automated tests pass.
 
 ## Conclusion
 
-QuickChat Part 2 demonstrates Java programming concepts such as classes, objects, methods, loops, conditional statements, input validation, file handling, and unit testing.
+QuickChat Part 3 demonstrates the integration of Java programming, message management, JSON storage, automated testing, and version control.
+
+The project combines the registration and login features from Part 1, the messaging features from Part 2, and the message storage and reporting functionality introduced in Part 3.
